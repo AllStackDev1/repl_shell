@@ -15,6 +15,8 @@ pub enum Command {
 impl TryFrom<&str> for Command {
     type Error = anyhow::Error;
 
+    /// This function takes a string and attempts to convert it into a Command enum.
+    /// It returns a Command enum if the string is a valid command, otherwise it returns an error.
     fn try_from(value: &str) -> Result<Self, Self::Error> {
         let split_value: Vec<&str> = value.split_whitespace().collect();
 

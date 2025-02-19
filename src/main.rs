@@ -11,6 +11,8 @@ use tokio::{
 
 use command::Command;
 
+/// This function spawns a new task that listens for user input and handles it.
+/// It returns a JoinHandle that can be awaited to wait for the task to finish.
 fn spawn_user_input_handler() -> JoinHandle<CrateResult<()>> {
     tokio::spawn(async {
         // Initialize stdin and stdout
@@ -27,9 +29,6 @@ fn spawn_user_input_handler() -> JoinHandle<CrateResult<()>> {
         stdout.flush().await?;
 
         while let Ok(Some(line)) = reader.next_line().await {
-            // Log user input for now (we'll process commands later)
-            // println!("User entered: {}", line);
-
             let command = handle_new_line(&line).await;
 
             if let Ok(command) = &command {
@@ -59,6 +58,8 @@ async fn main() {
     }
 }
 
+/// This function takes a line of user input and handles it.
+/// It returns a Command enum that represents the command that was parsed.
 async fn handle_new_line(line: &str) -> CrateResult<Command> {
     // Leverages the TryFrom trait implemented
     let command: Command = line.try_into()?;
